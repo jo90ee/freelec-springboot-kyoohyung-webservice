@@ -27,19 +27,22 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.projectlombok:lombok')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-mustache')
-    compile('com.h2database:h2')
-
-    compile('org.springframework.boot:spring-boot-starter-oauth2-client')
-    compile('org.springframework.session:spring-session-jdbc')
-
-    compile("org.mariadb.jdbc:mariadb-java-client")
-
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile("org.springframework.security:spring-security-test")
-    annotationProcessor('org.projectlombok:lombok')
-    testAnnotationProcessor('org.projectlombok:lombok')
+    compile('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok') // lombok을 사용하기위해 추가 되어야 하는 것임
+
+//    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+//    compile('org.springframework.boot:spring-boot-starter-mustache')
+//    compile('com.h2database:h2')
+//
+//    compile('org.springframework.boot:spring-boot-starter-oauth2-client') // 이걸 주석을 풀면 localhost에 붙을때 인증 확인을 하기 때문에 별도의 처리가 없다면 http 401에러를 발생 시킨다.
+//    compile('org.springframework.session:spring-session-jdbc')
+//
+//    compile("org.mariadb.jdbc:mariadb-java-client")
+//
+//
+//    testCompile("org.springframework.security:spring-security-test")
+
+//    testAnnotationProcessor('org.projectlombok:lombok')
 }
 
