@@ -10,7 +10,7 @@ import com.kyoohyung.book.springboot.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         postsRepository.delete(posts);
     }
-    @Transactional()
+    @Transactional(readOnly = true)// (readOnly = true ) 옵션은 트랜잭션 범위는 유지하되, 조회 기능만 남겨두어 조회 속도가 개선됨
     public PostsResponseDto findById(Long id) {
         Posts entity = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
@@ -45,10 +45,10 @@ public class PostsService {
         return new PostsResponseDto(entity);
     }
 
-//    @Transactional()
-//    public List<PostsListResponseDto> findAllDesc() {
-//        return postsRepository.findAllDesc().stream()
-//                .map(PostsListResponseDto::new)
-//                .collect(Collectors.toList());
-//    }
+    @Transactional(readOnly = true ) // (readOnly = true ) 옵션은 트랜잭션 범위는 유지하되, 조회 기능만 남겨두어 조회 속도가 개선됨
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
