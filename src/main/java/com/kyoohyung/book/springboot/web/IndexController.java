@@ -1,5 +1,6 @@
 package com.kyoohyung.book.springboot.web;
 
+import com.kyoohyung.book.springboot.config.auth.Dto.SessionUser;
 import com.kyoohyung.book.springboot.web.dto.PostsResponseDto;
 import com.kyoohyung.book.springboot.web.service.PostsService;
 import lombok.RequiredArgsConstructor;
@@ -8,15 +9,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
 
     private final PostsService postsService;
+    private final HttpSession httpSession;
 
     @GetMapping("/") //INDEX화면으로 데이터를 넣어줌
     public String index(Model model) {
         model.addAttribute("posts", postsService.findAllDesc());
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
 
