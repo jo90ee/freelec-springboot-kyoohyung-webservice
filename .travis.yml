@@ -1,3 +1,4 @@
+# 문법 조심해야함 "-" 다음에 한깐 띄어야 파싱이 성공됨
 language: java
 jdk:
   - openjdk8
