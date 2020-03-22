@@ -2,3 +2,5 @@
 .gradle
 .idea
 application-oauth.properties
+application-real-db.properties
+kyoohyung-book-webservice.pem
