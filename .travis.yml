@@ -16,7 +16,28 @@ cache:
 #master 브랜치에 푸시되었을 때 수행하는 명령어. 여기서는 프로젝트 내부에 둔 gradlew을 통해 clean & build를 수행한다.
 script: "./gradlew clean build"
 
- #CI실행 완료 시 메일로 알림 #Travis CI 실행 완료 시 자동으로 알람이 가도록 설정한다.
+before_deploy: # deploy 명령어가 실행되기 전에 수행됩니다. CodeDeploy는 Jar 파일은 인식하지 못하므로 Jar+ 기타 설정 파일들을 모아 압축(zip)한다.
+  - zip -r freelec-springboot-kyoohyung-webservice * # 현재 위치의 모든 파일을 freelec-springboot-kyoohyung-webservice 이름으로 압축(zip)한다. 명령어의 마지막 위치는 본인의 프로젝트 이름이어야 한다.
+  - mkdir -p deploy # deploy라는 디렉토리를 Travis CI가 실행 중인 위치에서 생성한다.
+  - mv freelec-springboot-kyoohyung-webservice.zip deploy/freelec-springboot-kyoohyung-webservice.zip  # 파일 이
+
+deploy:동 # S3로 파일 업로드 혹은 CodeDeploy로 배포 등 외부 서비스와 연동될 행위들을 선언한다.
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: kyooyung-book-webservice-build # S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # zip 파일 접근을 private으로
+    local_dir: deploy # before_deploy에서 생성한 디렉토리. # 앞에서 생성한 deploy 디렉토리를 지정한다. 해당 위치의 파이들만 S3로 전송한다.
+    wait-until-deploy: true
+
+
+
+
+
+
+#CI실행 완료 시 메일로 알림 #Travis CI 실행 완료 시 자동으로 알람이 가도록 설정한다.
 notifications:
   email:
     recipients:
