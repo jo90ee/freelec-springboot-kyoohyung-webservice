@@ -36,8 +36,9 @@ deploy: # S3로 파일 업로드 혹은 CodeDeploy로 배포 등 외부 서비�
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
     secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
     bucket: kyoohyung-book-webservice-build # S3 버킷
+    key: freelec-springboot-kyoohyung-webservice.zip #빌드 파일을 압축해서 전달
     bundle_type: zip
-    key: freelec-springboot-kyoohyung-webservice # 웹콜솔에서 등록한 CodeDeploy 애플리케이션
+    application: freelec-springboot-kyoohyung-webservice # 웹 콘솔에서 등록한 CodeDeploy 애플리케이션
     deployment_group: freelec-springboot-kyoohyung-webservice-group # 웹 콘솔에서 등록한 CodeDeploy배포 그룹
     region: ap-northeast-2
     wait-until-deploy: true
