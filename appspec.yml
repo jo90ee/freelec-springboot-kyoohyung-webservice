@@ -5,4 +5,17 @@ files:
     destination: /home/ec2-user/app/step2/zip/ #source에서 지정된 파일을 받을 위치. 이후 jar를 실행하는 등은 destination에서 옮긴 파일들로 진행
     overwrite: yes #기존에 파일들이 있으면 덮어쓸지를 결정한다. 현재 Yes라고 했으니 파이들을 덮었쓰게 된다.
 
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  ApplicationStart:
+    - location: deploy.sh
+      timeout: 60
+      runs: ec2-user
+
+
 

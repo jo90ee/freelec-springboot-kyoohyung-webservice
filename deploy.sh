@@ -62,7 +62,7 @@ echo " nohup java -jar $JAR_NAME 2>&1 &" >>  /home/ec2-user/app/step1/deploy.log
 #nohup java -jar $JAR_NAME 2>&1 &
 
 # 8.3절
-nohup java -jar -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties $JAR_NAME 2>&1 &
+#nohup java -jar -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties $JAR_NAME 2>&1 &
 
 #
 nohup java -jar -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties,/home/ec2-user/app/application-real-db.properties \
