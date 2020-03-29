@@ -9,7 +9,7 @@ branches: # Travis CI를 어느 브랜치가 푸시될 떄 수행할지 지정�
 
   #travis CI 서버의 home # 그래이들을 통해 의존성을 받게 되면 이를 해당 디렉토리에 캐시하여, 같은 의존성은 다음 배포 때부터 다시 받지 않도록 설정 한다.
 cache:
-    directories:
+  directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
@@ -32,16 +32,21 @@ deploy: # S3로 파일 업로드 혹은 CodeDeploy로 배포 등 외부 서비�
     local_dir: deploy # before_deploy에서 생성한 디렉토리. # 앞에서 생성한 deploy 디렉토리를 지정한다. 해당 위치의 파이들만 S3로 전송한다.
     wait-until-deploy: true
 
-
-
-
-
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: kyoohyung-book-webservice-build # S3 버킷
+    bundle_type: zip
+    key: freelec-springboot-kyoohyung-webservice # 웹콜솔에서 등록한 CodeDeploy 애플리케이션
+    deployment_group: freelec-springboot-kyoohyung-webservice-group # 웹 콘솔에서 등록한 CodeDeploy배포 그룹
+    region: ap-northeast-2
+    wait-until-deploy: true
 
 #CI실행 완료 시 메일로 알림 #Travis CI 실행 완료 시 자동으로 알람이 가도록 설정한다.
 notifications:
   email:
     recipients:
-     - cho.kyoohyung@gmail.com
+      - cho.kyoohyung@gmail.com
 
 
 
