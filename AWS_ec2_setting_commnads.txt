@@ -1,0 +1,81 @@
+-- Java 8 설치
+sudo yum install -y java-1.8.0-openjdk-devel.x86_64
+
+sudo /usr/sbin/alternatives --config java
+
+sudo yum remove java-1.7.0-openjdk
+
+java -version
+
+-- 타임존 변경
+sudo rm /etc/localtime
+sudo ln -s /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
+-- Hostname 변경
+sudo  vim /etc/sysconfig/network
+ ** HOSTNAME = localhost.localdomain ===>> HOSTNAME = kyoohyung-book-webservice
+
+sudo reboot  # 해야 변경이 확인
+
+sudo vim /etc/hosts #호스트 주소를 찾을때 가장 먼저 검색해 보는 /etc/hosts에 변경한 hostname을 등록한다.
+** 127.0.0.1 kyoohyung-book-webservice
+
+
+-- EC2에서 RDS에서 접근 확인
+1)EC2에서 mysql를 설치
+sudo yum install mysql
+
+* ec2에서 RDS 접속 명령어
+mysql -u jo90ee -p -h kyoohyung-book-webservice.c4jldoh4s4lk.ap-northeast-2.rds.amazonaws.com
+
+[8장] EC2 서버에 프로젝트를 배포해 보자
+sudo yum install git
+
+git --version
+
+mkdir ~/app && mkdir ~/app/step1
+
+cd ~/app/step1
+
+git clone https://github.com/jo90ee/freelec-springboot-kyoohyung-webservice.git
+
+[실제 서버 배포를 위해서만들어야 할 파일들]
+1) deploy.sh
+2) vim /home/ec2-user/app/application-oauth.properties  ==> EC2 서버에 직접 만들어야 한다. (중요 정보이기 때분에 git에 등록 되면 안됨)
+3) application.properties ==> 이건 프로젝트 내에 존재
+4)  vim ~/app/application-real-db.properties ==> EC2 서버에 직접 만들어야 한다. (중요 정보이기 때분에 git에 등록 되면 안됨)
+
+
+
+[TRAVIS CI와 AWS S3, CodeDeploy 연동하기]
+- EC2에 CodeDeploy 에이전트 설치 하기, EC2에 붙어서 아래 명령어를 친다.
+책의 내용으로는 안되고 아래 링크에 있는대로 해서 설치 함.
+https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/codedeploy-agent-operations-install-linux.html
+
+* 설치후 CodeDeploy agent 동작 확인
+sudo service codedeploy-agent status
+
+
+
+[NginX설치]
+sudo yum install nginx
+
+sudo service nginx start
+
+[Nginx 와 Spring Boot와 연동]
+
+sudo vim /etc/nginx/nginx.conf 로
+location  { 여기에  아래 4줄 추가
+    proxy_pass http://localhost:8080
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+}
+
+[무중단 배포를 위한 Nginx설정 수정
+Nginx설정이 모여있는 /etc/nginx/conf.d 에 service-url.inc 라는 파일을 생성 하고 아래 내용을 추가함.
+
+sudo vim /etc/nginx/conf.d/service-url.inc
+
+set $service_url http://127.0.0.1:8080;
+

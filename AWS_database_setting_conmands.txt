@@ -1,3 +1,5 @@
+## kyoohyung_book_webservice의 id/pass == jo90ee / skt1109751
+
 use kyoohyung_book_webservice;
 
 
@@ -7,7 +9,7 @@ show variables like 'c%';
 select @@time_zone, now();
 
 ALTER DATABASE kyoohyung_book_webservice
-CHARACTER SET = 'ㅕ'
+CHARACTER SET = 'utf8mb4'
 COLLATE = 'utf8mb4_general_ci';
 
 SHOW GLOBAL VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%'
