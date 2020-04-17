@@ -79,3 +79,10 @@ sudo vim /etc/nginx/conf.d/service-url.inc
 
 set $service_url http://127.0.0.1:8080;
 
+
+## 8080 포트 점유 하는 pid 찾
+ netstat -ntlp | grep :8080기
+
+# 특정 pid kill 하기
+ kill -9 #pid
+
